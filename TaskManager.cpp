@@ -211,6 +211,54 @@ public:
         }
     }
 
+    void delete_task_high(const std::string& title) {
+        for (auto it = tasks.begin(); it != tasks.end(); it++) {
+            if (title == (*it)->get_task_title()) {
+                tasks.erase(it);
+                break;
+            }
+        }
+
+        for (auto it = tasks_high.begin(); it != tasks_high.end(); it++) {
+            if (title == (*it)->get_task_title()) {
+                tasks_high.erase(it);
+                break;
+            }
+        }
+    }
+
+    void delete_task_middle(const std::string& title) {
+        for (auto it = tasks.begin(); it != tasks.end(); it++) {
+            if (title == (*it)->get_task_title()) {
+                tasks.erase(it);
+                break;
+            }
+        }
+
+        for (auto it = tasks_middle.begin(); it != tasks_middle.end(); it++) {
+            if (title == (*it)->get_task_title()) {
+                tasks_middle.erase(it);
+                break;
+            }
+        }
+    }
+
+    void delete_task_low(const std::string& title) {
+        for (auto it = tasks.begin(); it != tasks.end(); it++) {
+            if (title == (*it)->get_task_title()) {
+                tasks.erase(it);
+                break;
+            }
+        }
+
+        for (auto it = tasks_low.begin(); it != tasks_low.end(); it++) {
+            if (title == (*it)->get_task_title()) {
+                tasks_low.erase(it);
+                break;
+            }
+        }
+    }
+
     void display_tasks_high() {
         std::cout << "High-Priority Tasks: \n";
         for (int i = 0; i < tasks_high.size(); i++) {
@@ -272,6 +320,20 @@ private:
     }
 
     void complete_info2() const {
+        std::cout << "Enter Tasks' Title: ";
+    }
+
+    void delete_info1() const {
+        std::cout << "----------------------\n";
+        std::cout << "     DELETING MENU    \n";
+        std::cout << "----------------------\n";
+        std::cout << "Select: \n";
+        std::cout << "1 - Delete High-Priority Task\n";
+        std::cout << "2 - Delete Middle-Priority Task\n";
+        std::cout << "3 - Delete Low-Priority Task\n\n";
+    }
+
+    void delete_info2() const {
         std::cout << "Enter Tasks' Title: ";
     }
 
@@ -342,8 +404,9 @@ public:
         std::cout << "0 - Exit\n";
         std::cout << "1 - Create\n";
         std::cout << "2 - Complete\n";
-        std::cout << "3 - View\n";
-        std::cout << "4 - Clear Console\n\n";
+        std::cout << "3 - Delete\n";
+        std::cout << "4 - View\n";
+        std::cout << "5 - Clear Console\n\n";
     }
 
     void exit_case() {
@@ -401,6 +464,40 @@ public:
             std::cin >> title;
 
             complete_task_low(title);
+        }
+    }
+
+    void delete_case() {
+        delete_info1();
+
+        int choice;
+        std::cin >> choice;
+
+        if (choice == 1) {
+            delete_info2();
+
+            std::string title;
+            std::cin >> title;
+
+            delete_task_high(title);
+        }
+
+        if (choice == 2) {
+            delete_info2();
+
+            std::string title;
+            std::cin >> title;
+
+            delete_task_middle(title);
+        }
+
+        if (choice == 3) {
+            delete_info2();
+
+            std::string title;
+            std::cin >> title;
+
+            delete_task_low(title);
         }
     }
 
@@ -462,11 +559,18 @@ int main() {
 
         if (choice == 3) {
             system("cls");
-            UI.view_case();
+            UI.delete_case();
+            system("cls");
             UI.general_info();
         }
 
         if (choice == 4) {
+            system("cls");
+            UI.view_case();
+            UI.general_info();
+        }
+
+        if (choice == 5) {
             system("cls");
             UI.general_info();
         }
