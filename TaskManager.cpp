@@ -1,139 +1,141 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <string>
 
 class Task {
 public:
-    virtual std::string get_task_name() const = 0;
+    virtual std::string get_task_title() const = 0;
     virtual std::string get_task_description() const = 0;
     virtual std::string get_task_priority() const = 0;
     virtual std::string get_task_status() const = 0;
     virtual void display_task() const = 0;
+    virtual void complete_task() = 0;
 };
 
 class TaskHigh : public Task {
 private:
-    std::string name;
-    std::string description;
-    std::string priority = "High";
-    bool status = false;
+    std::string task_title;
+    std::string task_description;
+    std::string task_priority = "High";
+    bool task_status = false;
 public:
     TaskHigh() {}
 
-    TaskHigh(std::string n, std::string d) {
-        name = n;
-        description = d;
+    TaskHigh(const std::string& t, const std::string& d) {
+        task_title = t;
+        task_description = d;
     }
 
-    std::string get_task_name() const override {
-        return name;
+    std::string get_task_title() const override {
+        return task_title;
     }
 
     std::string get_task_description() const override {
-        return description;
+        return task_description;
     }
 
     std::string get_task_priority() const override {
-        return priority;
+        return task_priority;
     }
 
     std::string get_task_status() const override {
-        return (status ? "Completed" : "Uncompleted");
+        return (task_status ? "Completed" : "Uncompleted");
     }
 
     void display_task() const override {
-        std::cout << "Name: " << name << '\n';
-        std::cout << "Description: " << description << '\n';
-        std::cout << "Priority: " << priority << '\n';
+        std::cout << "Title: " << task_title << '\n';
+        std::cout << "Description: " << task_description << '\n';
+        std::cout << "Priority: " << task_priority << '\n';
         std::cout << "Status: " << get_task_status() << "\n\n";
     }
 
-    bool operator == (const Task*& other) {
-        return name == other->get_task_name();
+    void complete_task() override {
+        task_status = true;
     }
 };
 
 class TaskMiddle : public Task {
 private:
-    std::string name;
-    std::string description;
-    std::string priority = "Middle";
-    bool status = false;
+    std::string task_title;
+    std::string task_description;
+    std::string task_priority = "Middle";
+    bool task_status = false;
 public:
     TaskMiddle() {}
 
-    TaskMiddle(std::string n, std::string d) {
-        name = n;
-        description = d;
+    TaskMiddle(const std::string& t, const std::string& d) {
+        task_title = t;
+        task_description = d;
     }
 
-    std::string get_task_name() const override {
-        return name;
+    std::string get_task_title() const override {
+        return task_title;
     }
 
     std::string get_task_description() const override {
-        return description;
+        return task_description;
     }
 
     std::string get_task_priority() const override {
-        return priority;
+        return task_priority;
     }
 
     std::string get_task_status() const override {
-        return (status ? "Completed" : "Uncompleted");
+        return (task_status ? "Completed" : "Uncompleted");
     }
 
     void display_task() const override {
-        std::cout << "Name: " << name << '\n';
-        std::cout << "Description: " << description << '\n';
-        std::cout << "Priority: " << priority << '\n';
+        std::cout << "Title: " << task_title << '\n';
+        std::cout << "Description: " << task_description << '\n';
+        std::cout << "Priority: " << task_priority << '\n';
         std::cout << "Status: " << get_task_status() << "\n\n";
     }
 
-    bool operator == (const Task*& other) {
-        return name == other->get_task_name();
+    void complete_task() override {
+        task_status = true;
     }
 };
 
 class TaskLow : public Task {
 private:
-    std::string name;
-    std::string description;
-    std::string priority = "Low";
-    bool status = false;
+    std::string task_title;
+    std::string task_description;
+    std::string task_priority = "Middle";
+    bool task_status = false;
 public:
     TaskLow() {}
 
-    TaskLow(std::string n, std::string d) {
-        name = n;
-        description = d;
+    TaskLow(const std::string& t, const std::string& d) {
+        task_title = t;
+        task_description = d;
     }
 
-    std::string get_task_name() const override {
-        return name;
+    std::string get_task_title() const override {
+        return task_title;
     }
 
     std::string get_task_description() const override {
-        return description;
+        return task_description;
     }
 
     std::string get_task_priority() const override {
-        return priority;
+        return task_priority;
     }
 
     std::string get_task_status() const override {
-        return (status ? "Completed" : "Uncompleted");
+        return (task_status ? "Completed" : "Uncompleted");
     }
 
     void display_task() const override {
-        std::cout << "Name: " << name << '\n';
-        std::cout << "Description: " << description << '\n';
-        std::cout << "Priority: " << priority << '\n';
+        std::cout << "Title: " << task_title << '\n';
+        std::cout << "Description: " << task_description << '\n';
+        std::cout << "Priority: " << task_priority << '\n';
         std::cout << "Status: " << get_task_status() << "\n\n";
     }
 
-    bool operator == (const Task*& other) {
-        return name == other->get_task_name();
+    void complete_task() override {
+        task_status = true;
     }
 };
 
@@ -161,9 +163,52 @@ public:
         tasks.push_back(task);
     }
 
-    void complete_task(Task* task) {
-        auto it = std::find(tasks.begin(), tasks.end(), task);
-        tasks.erase(it);
+    void complete_task_high(const std::string& title) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (title == tasks[i]->get_task_title()) {
+                tasks[i]->complete_task();
+                break;
+            }
+        }
+
+        for (int i = 0; i < tasks_high.size(); i++) {
+            if (title == tasks_high[i]->get_task_title()) {
+                tasks_high[i]->complete_task();
+                break;
+            }
+        }
+    }
+
+    void complete_task_middle(const std::string& title) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (title == tasks[i]->get_task_title()) {
+                tasks[i]->complete_task();
+                break;
+            }
+        }
+
+        for (int i = 0; i < tasks_middle.size(); i++) {
+            if (title == tasks_middle[i]->get_task_title()) {
+                tasks_middle[i]->complete_task();
+                break;
+            }
+        }
+    }
+
+    void complete_task_low(const std::string& title) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (title == tasks[i]->get_task_title()) {
+                tasks[i]->complete_task();
+                break;
+            }
+        }
+
+        for (int i = 0; i < tasks_low.size(); i++) {
+            if (title == tasks_low[i]->get_task_title()) {
+                tasks_low[i]->complete_task();
+                break;
+            }
+        }
     }
 
     void display_tasks_high() {
@@ -216,11 +261,18 @@ private:
         std::cout << "3 - Low-Priority Task\n\n";
     }
 
-    void complete_info() const {
+    void complete_info1() const {
         std::cout << "----------------------\n";
-        std::cout << "     COMPLETING MENU    \n";
+        std::cout << "    COMPLETING MENU   \n";
         std::cout << "----------------------\n";
-        std::cout << "To complete task enter title: ";
+        std::cout << "Select: \n";
+        std::cout << "1 - Complete High-Priority Task\n";
+        std::cout << "2 - Complete Middle-Priority Task\n";
+        std::cout << "3 - Complete Low-Priority Task\n\n";
+    }
+
+    void complete_info2() const {
+        std::cout << "Enter Tasks' Title: ";
     }
 
     void view_info() const {
@@ -277,9 +329,10 @@ private:
         add_task_low(task_low);
     }
 public:
+    UserInterface() {}
+
     void greeting() const {
         std::cout << "WELCOME TO TASKMANAGER\n\n";
-        
     }
 
     void general_info() const {
@@ -289,7 +342,8 @@ public:
         std::cout << "0 - Exit\n";
         std::cout << "1 - Create\n";
         std::cout << "2 - Complete\n";
-        std::cout << "3 - View\n\n";
+        std::cout << "3 - View\n";
+        std::cout << "4 - Clear Console\n\n";
     }
 
     void exit_case() {
@@ -317,13 +371,37 @@ public:
     }
 
     void complete_case() {
-        complete_info();
+        complete_info1();
 
-        std::string title;
-        std::cin >> title;
+        int choice;
+        std::cin >> choice;
 
-        Task* task = new TaskHigh(title, "");
-        complete_task(task);
+        if (choice == 1) {
+            complete_info2();
+
+            std::string title;
+            std::cin >> title;
+
+            complete_task_high(title);
+        }
+
+        if (choice == 2) {
+            complete_info2();
+
+            std::string title;
+            std::cin >> title;
+
+            complete_task_middle(title);
+        }
+
+        if (choice == 3) {
+            complete_info2();
+
+            std::string title;
+            std::cin >> title;
+
+            complete_task_low(title);
+        }
     }
 
     void view_case() {
@@ -376,15 +454,20 @@ int main() {
         }
 
         if (choice == 2) {
-            // system("cls");
-            // UI.complete_case();
-            // system("cls");
-            // UI.general_info();
+            system("cls");
+            UI.complete_case();
+            system("cls");
+            UI.general_info();
         }
 
         if (choice == 3) {
             system("cls");
             UI.view_case();
+            UI.general_info();
+        }
+
+        if (choice == 4) {
+            system("cls");
             UI.general_info();
         }
     }
