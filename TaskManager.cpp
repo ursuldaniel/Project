@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 #include <string>
 
 class Task {
@@ -145,6 +144,33 @@ private:
     std::vector<TaskMiddle*> tasks_middle;
     std::vector<TaskLow*> tasks_low;
     std::vector<Task*> tasks;
+
+    bool task_high_exists(const std::string& title) const {
+        for (int i = 0; i < tasks_high.size(); i++) {
+            if (title == tasks_high[i]->get_task_title()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool task_middle_exists(const std::string& title) const {
+        for (int i = 0; i < tasks_middle.size(); i++) {
+            if (title == tasks_middle[i]->get_task_title()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool task_low_exists(const std::string& title) const {
+        for (int i = 0; i < tasks_middle.size(); i++) {
+            if (title == tasks_low[i]->get_task_title()) {
+                return true;
+            }
+        }
+        return false;
+    }
 public:
     TaskManager() {}
 
@@ -164,6 +190,11 @@ public:
     }
 
     void complete_task_high(const std::string& title) {
+        if (!task_high_exists(title)) {
+            std::cout << "There Are No Such High-Priority Task\n";
+            return;
+        }
+
         for (int i = 0; i < tasks.size(); i++) {
             if (title == tasks[i]->get_task_title()) {
                 tasks[i]->complete_task();
@@ -180,6 +211,11 @@ public:
     }
 
     void complete_task_middle(const std::string& title) {
+        if (!task_middle_exists(title)) {
+            std::cout << "There Are No Such Middle-Priority Task\n";
+            return;
+        }
+
         for (int i = 0; i < tasks.size(); i++) {
             if (title == tasks[i]->get_task_title()) {
                 tasks[i]->complete_task();
@@ -196,6 +232,11 @@ public:
     }
 
     void complete_task_low(const std::string& title) {
+        if (!task_low_exists(title)) {
+            std::cout << "There Are No Such Low-Priority Task\n";
+            return;
+        }
+
         for (int i = 0; i < tasks.size(); i++) {
             if (title == tasks[i]->get_task_title()) {
                 tasks[i]->complete_task();
@@ -212,6 +253,11 @@ public:
     }
 
     void delete_task_high(const std::string& title) {
+        if (!task_high_exists(title)) {
+            std::cout << "There Are No Such High-Priority Task\n";
+            return;
+        }
+
         for (auto it = tasks.begin(); it != tasks.end(); it++) {
             if (title == (*it)->get_task_title()) {
                 tasks.erase(it);
@@ -228,6 +274,11 @@ public:
     }
 
     void delete_task_middle(const std::string& title) {
+        if (!task_middle_exists(title)) {
+            std::cout << "There Are No Such Middle-Priority Task\n";
+            return;
+        }
+
         for (auto it = tasks.begin(); it != tasks.end(); it++) {
             if (title == (*it)->get_task_title()) {
                 tasks.erase(it);
@@ -244,6 +295,11 @@ public:
     }
 
     void delete_task_low(const std::string& title) {
+        if (!task_low_exists(title)) {
+            std::cout << "There Are No Such Low-Priority Task\n";
+            return;
+        }
+
         for (auto it = tasks.begin(); it != tasks.end(); it++) {
             if (title == (*it)->get_task_title()) {
                 tasks.erase(it);
@@ -260,6 +316,11 @@ public:
     }
 
     void display_tasks_high() {
+        if (tasks_high.size() == 0) {
+            std::cout << "There Are No High-Priority Tasks\n";
+            return;
+        }
+
         std::cout << "High-Priority Tasks: \n";
         for (int i = 0; i < tasks_high.size(); i++) {
             std::cout << "#" << i + 1 << '\n';
@@ -268,6 +329,11 @@ public:
     }
 
     void display_tasks_middle() {
+        if (tasks_middle.size() == 0) {
+            std::cout << "There Are No Middle-Priority Tasks\n";
+            return;
+        }
+
         std::cout << "Middle-Priority Tasks: \n";
         for (int i = 0; i < tasks_middle.size(); i++) {
             std::cout << "#" << i + 1 << '\n';
@@ -276,6 +342,11 @@ public:
     }
 
     void display_tasks_low() {
+        if (tasks_low.size() == 0) {
+            std::cout << "There Are No Low-Priority Tasks\n";
+            return;
+        }
+
         std::cout << "Low-Priority Tasks: \n";
         for (int i = 0; i < tasks_low.size(); i++) {
             std::cout << "#" << i + 1 << '\n';
@@ -284,6 +355,11 @@ public:
     }
 
     void unsorted_display() {
+        if (tasks.size() == 0) {
+            std::cout << "There Are No Tasks\n";
+            return;
+        }
+
         for (int i = 0; i < tasks.size(); i++) {
             std::cout << "#" << i + 1 << '\n';
             tasks[i]->display_task();
@@ -291,6 +367,11 @@ public:
     }
 
     void sorted_display() {
+        if (tasks.size() == 0) {
+            std::cout << "There Are No Tasks\n";
+            return;
+        }
+
         display_tasks_high();
         display_tasks_middle();
         display_tasks_low();
@@ -546,21 +627,21 @@ int main() {
         if (choice == 1) {
             system("cls");
             UI.create_case();
-            system("cls");
+            // system("cls");
             UI.general_info();
         }
 
         if (choice == 2) {
             system("cls");
             UI.complete_case();
-            system("cls");
+            // system("cls");
             UI.general_info();
         }
 
         if (choice == 3) {
             system("cls");
             UI.delete_case();
-            system("cls");
+            // system("cls");
             UI.general_info();
         }
 
