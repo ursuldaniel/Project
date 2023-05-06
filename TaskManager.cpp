@@ -498,18 +498,18 @@ public:
     void create_case() {
         create_info();
 
-        int choice;
+        std::string choice;
         std::cin >> choice;
 
-        if (choice == 1) {
+        if (choice == "1") {
             create_task_high();
         }
 
-        if (choice == 2) {
+        if (choice == "2") {
             create_task_middle();
         }
 
-        if (choice == 3) {
+        if (choice == "3") {
             create_task_low();
         }
     }
@@ -517,10 +517,10 @@ public:
     void complete_case() {
         complete_info1();
 
-        int choice;
+        std::string choice;
         std::cin >> choice;
 
-        if (choice == 1) {
+        if (choice == "1") {
             complete_info2();
 
             std::string title;
@@ -529,7 +529,7 @@ public:
             complete_task_high(title);
         }
 
-        if (choice == 2) {
+        if (choice == "2") {
             complete_info2();
 
             std::string title;
@@ -538,7 +538,7 @@ public:
             complete_task_middle(title);
         }
 
-        if (choice == 3) {
+        if (choice == "3") {
             complete_info2();
 
             std::string title;
@@ -551,10 +551,10 @@ public:
     void delete_case() {
         delete_info1();
 
-        int choice;
+        std::string choice;
         std::cin >> choice;
 
-        if (choice == 1) {
+        if (choice == "1") {
             delete_info2();
 
             std::string title;
@@ -563,7 +563,7 @@ public:
             delete_task_high(title);
         }
 
-        if (choice == 2) {
+        if (choice == "2") {
             delete_info2();
 
             std::string title;
@@ -572,7 +572,7 @@ public:
             delete_task_middle(title);
         }
 
-        if (choice == 3) {
+        if (choice == "3") {
             delete_info2();
 
             std::string title;
@@ -585,26 +585,26 @@ public:
     void view_case() {
         view_info();
 
-        int choice;
+        std::string choice;
         std::cin >> choice;
 
-        if (choice == 1) {
+        if (choice == "1") {
             display_tasks_high();
         }
 
-        if (choice == 2) {
+        if (choice == "2") {
             display_tasks_middle();
         }
 
-        if (choice == 3) {
+        if (choice == "3") {
             display_tasks_low();
         }
 
-        if (choice == 4) {
+        if (choice == "4") {
             unsorted_display();
         }
 
-        if (choice == 5) {
+        if (choice == "5") {
             sorted_display();
         }
     }
@@ -616,42 +616,42 @@ int main() {
     UI.general_info();
     
     while (true) {
-        int choice;
+        std::string choice;
         std::cout << "Your Choice: ";
         std::cin >> choice;
 
-        if (choice == 0){
+        if (choice == "0"){
             UI.exit_case();
         }
         
-        if (choice == 1) {
+        if (choice == "1") {
             system("cls");
             UI.create_case();
             // system("cls");
             UI.general_info();
         }
 
-        if (choice == 2) {
+        if (choice == "2") {
             system("cls");
             UI.complete_case();
             // system("cls");
             UI.general_info();
         }
 
-        if (choice == 3) {
+        if (choice == "3") {
             system("cls");
             UI.delete_case();
             // system("cls");
             UI.general_info();
         }
 
-        if (choice == 4) {
+        if (choice == "4") {
             system("cls");
             UI.view_case();
             UI.general_info();
         }
 
-        if (choice == 5) {
+        if (choice == "5") {
             system("cls");
             UI.general_info();
         }
