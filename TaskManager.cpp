@@ -3,169 +3,82 @@
 #include <string>
 
 class Task {
-public:
-    virtual std::string get_task_title() const = 0;
-    virtual std::string get_task_description() const = 0;
-    virtual std::string get_task_priority() const = 0;
-    virtual std::string get_task_status() const = 0;
-    virtual void display_task() const = 0;
-    virtual void complete_task() = 0;
-};
-
-class TaskHigh : public Task {
 private:
     std::string task_title;
     std::string task_description;
-    std::string task_priority = "High";
+    std::string task_priority;
     bool task_status = false;
 public:
-    TaskHigh() {}
+    Task() {}
 
-    TaskHigh(const std::string& t, const std::string& d) {
+    Task(const std::string& t, const std::string d, const std::string& p) {
         task_title = t;
         task_description = d;
+        task_priority = p;
     }
 
-    std::string get_task_title() const override {
+    std::string get_task_title() const {
         return task_title;
     }
 
-    std::string get_task_description() const override {
+    std::string get_task_description() const {
         return task_description;
     }
 
-    std::string get_task_priority() const override {
+    std::string get_task_priority() const {
         return task_priority;
     }
 
-    std::string get_task_status() const override {
+    std::string get_task_status() const {
         return (task_status ? "Completed" : "Uncompleted");
     }
 
-    void display_task() const override {
+    void get_task_completed() {
+        task_status = true; 
+    }
+
+    void display_task() const {
         std::cout << "Title: " << task_title << '\n';
         std::cout << "Description: " << task_description << '\n';
         std::cout << "Priority: " << task_priority << '\n';
-        std::cout << "Status: " << get_task_status() << "\n\n";
-    }
-
-    void complete_task() override {
-        task_status = true;
-    }
-};
-
-class TaskMiddle : public Task {
-private:
-    std::string task_title;
-    std::string task_description;
-    std::string task_priority = "Middle";
-    bool task_status = false;
-public:
-    TaskMiddle() {}
-
-    TaskMiddle(const std::string& t, const std::string& d) {
-        task_title = t;
-        task_description = d;
-    }
-
-    std::string get_task_title() const override {
-        return task_title;
-    }
-
-    std::string get_task_description() const override {
-        return task_description;
-    }
-
-    std::string get_task_priority() const override {
-        return task_priority;
-    }
-
-    std::string get_task_status() const override {
-        return (task_status ? "Completed" : "Uncompleted");
-    }
-
-    void display_task() const override {
-        std::cout << "Title: " << task_title << '\n';
-        std::cout << "Description: " << task_description << '\n';
-        std::cout << "Priority: " << task_priority << '\n';
-        std::cout << "Status: " << get_task_status() << "\n\n";
-    }
-
-    void complete_task() override {
-        task_status = true;
-    }
-};
-
-class TaskLow : public Task {
-private:
-    std::string task_title;
-    std::string task_description;
-    std::string task_priority = "Middle";
-    bool task_status = false;
-public:
-    TaskLow() {}
-
-    TaskLow(const std::string& t, const std::string& d) {
-        task_title = t;
-        task_description = d;
-    }
-
-    std::string get_task_title() const override {
-        return task_title;
-    }
-
-    std::string get_task_description() const override {
-        return task_description;
-    }
-
-    std::string get_task_priority() const override {
-        return task_priority;
-    }
-
-    std::string get_task_status() const override {
-        return (task_status ? "Completed" : "Uncompleted");
-    }
-
-    void display_task() const override {
-        std::cout << "Title: " << task_title << '\n';
-        std::cout << "Description: " << task_description << '\n';
-        std::cout << "Priority: " << task_priority << '\n';
-        std::cout << "Status: " << get_task_status() << "\n\n";
-    }
-
-    void complete_task() override {
-        task_status = true;
+        std::cout << "Status: " << get_task_status() << "\n\n"; 
     }
 };
 
 class TaskManager {
 private:
-    std::vector<TaskHigh*> tasks_high;
-    std::vector<TaskMiddle*> tasks_middle;
-    std::vector<TaskLow*> tasks_low;
-    std::vector<Task*> tasks;
+    std::vector<Task> tasks;
 
-    bool task_high_exists(const std::string& title) const {
-        for (int i = 0; i < tasks_high.size(); i++) {
-            if (title == tasks_high[i]->get_task_title()) {
+    bool task_exists(const std::string& title) const {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (title == tasks[i].get_task_title()) {
+                return true;
+            }
+        }
+        return true;
+    }
+
+    bool task_high_exists() const {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks[i].get_task_priority() == "High") {
                 return true;
             }
         }
         return false;
     }
 
-    bool task_middle_exists(const std::string& title) const {
-        for (int i = 0; i < tasks_middle.size(); i++) {
-            if (title == tasks_middle[i]->get_task_title()) {
+    bool task_middle_exists() const {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks[i].get_task_priority() == "Middle") {
                 return true;
             }
         }
         return false;
     }
 
-    bool task_low_exists(const std::string& title) const {
-        for (int i = 0; i < tasks_middle.size(); i++) {
-            if (title == tasks_low[i]->get_task_title()) {
+    bool task_low_exists() const {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks[i].get_task_priority() == "Low") {
                 return true;
             }
         }
@@ -174,187 +87,87 @@ private:
 public:
     TaskManager() {}
 
-    void add_task_high(TaskHigh* task) {
-        tasks_high.push_back(task);
+    void add_task(const Task& task) { //
         tasks.push_back(task);
     }
 
-    void add_task_middle(TaskMiddle* task) {
-        tasks_middle.push_back(task);
-        tasks.push_back(task);
-    }
-
-    void add_task_low(TaskLow* task) {
-        tasks_low.push_back(task);
-        tasks.push_back(task);
-    }
-
-    void complete_task_high(const std::string& title) {
-        if (!task_high_exists(title)) {
-            std::cout << "There Are No Such High-Priority Task\n";
+    void complete_task(const std::string& title) {
+        if (!task_exists(title)) {
+            std::cout << "There Is No Such Task\n";
             return;
         }
 
         for (int i = 0; i < tasks.size(); i++) {
-            if (title == tasks[i]->get_task_title()) {
-                tasks[i]->complete_task();
+            if (title == tasks[i].get_task_title()) {
+                tasks[i].get_task_completed();
                 break;
             }
         }
 
-        for (int i = 0; i < tasks_high.size(); i++) {
-            if (title == tasks_high[i]->get_task_title()) {
-                tasks_high[i]->complete_task();
-                break;
-            }
-        }
+        std::cout << "There Is No Such Task\n\n";
     }
 
-    void complete_task_middle(const std::string& title) {
-        if (!task_middle_exists(title)) {
-            std::cout << "There Are No Such Middle-Priority Task\n";
-            return;
-        }
-
-        for (int i = 0; i < tasks.size(); i++) {
-            if (title == tasks[i]->get_task_title()) {
-                tasks[i]->complete_task();
-                break;
-            }
-        }
-
-        for (int i = 0; i < tasks_middle.size(); i++) {
-            if (title == tasks_middle[i]->get_task_title()) {
-                tasks_middle[i]->complete_task();
-                break;
-            }
-        }
-    }
-
-    void complete_task_low(const std::string& title) {
-        if (!task_low_exists(title)) {
-            std::cout << "There Are No Such Low-Priority Task\n";
-            return;
-        }
-
-        for (int i = 0; i < tasks.size(); i++) {
-            if (title == tasks[i]->get_task_title()) {
-                tasks[i]->complete_task();
-                break;
-            }
-        }
-
-        for (int i = 0; i < tasks_low.size(); i++) {
-            if (title == tasks_low[i]->get_task_title()) {
-                tasks_low[i]->complete_task();
-                break;
-            }
-        }
-    }
-
-    void delete_task_high(const std::string& title) {
-        if (!task_high_exists(title)) {
-            std::cout << "There Are No Such High-Priority Task\n";
-            return;
+    void delete_task(const std::string& title) {
+        if (!task_exists(title)) {
+            std::cout << "There Is No Such Task\n";
         }
 
         for (auto it = tasks.begin(); it != tasks.end(); it++) {
-            if (title == (*it)->get_task_title()) {
+            if (title == it->get_task_title()) {
                 tasks.erase(it);
                 break;
             }
         }
 
-        for (auto it = tasks_high.begin(); it != tasks_high.end(); it++) {
-            if (title == (*it)->get_task_title()) {
-                tasks_high.erase(it);
-                break;
-            }
-        }
+        std::cout << "There Is No Such Task\n\n";
     }
 
-    void delete_task_middle(const std::string& title) {
-        if (!task_middle_exists(title)) {
-            std::cout << "There Are No Such Middle-Priority Task\n";
-            return;
-        }
-
-        for (auto it = tasks.begin(); it != tasks.end(); it++) {
-            if (title == (*it)->get_task_title()) {
-                tasks.erase(it);
-                break;
-            }
-        }
-
-        for (auto it = tasks_middle.begin(); it != tasks_middle.end(); it++) {
-            if (title == (*it)->get_task_title()) {
-                tasks_middle.erase(it);
-                break;
-            }
-        }
-    }
-
-    void delete_task_low(const std::string& title) {
-        if (!task_low_exists(title)) {
-            std::cout << "There Are No Such Low-Priority Task\n";
-            return;
-        }
-
-        for (auto it = tasks.begin(); it != tasks.end(); it++) {
-            if (title == (*it)->get_task_title()) {
-                tasks.erase(it);
-                break;
-            }
-        }
-
-        for (auto it = tasks_low.begin(); it != tasks_low.end(); it++) {
-            if (title == (*it)->get_task_title()) {
-                tasks_low.erase(it);
-                break;
-            }
-        }
-    }
-
-    void display_tasks_high() {
-        if (tasks_high.size() == 0) {
+    void display_tasks_high() const {
+        if (!task_high_exists()) {
             std::cout << "There Are No High-Priority Tasks\n";
             return;
         }
 
         std::cout << "High-Priority Tasks: \n";
-        for (int i = 0; i < tasks_high.size(); i++) {
-            std::cout << "#" << i + 1 << '\n';
-            tasks_high[i]->display_task();
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks[i].get_task_priority() == "High") {
+                std::cout << "#" << i + 1 << '\n';
+                tasks[i].display_task();
+            }
         }
     }
 
-    void display_tasks_middle() {
-        if (tasks_middle.size() == 0) {
+    void display_tasks_middle() const {
+        if (!task_middle_exists()) {
             std::cout << "There Are No Middle-Priority Tasks\n";
             return;
         }
 
         std::cout << "Middle-Priority Tasks: \n";
-        for (int i = 0; i < tasks_middle.size(); i++) {
-            std::cout << "#" << i + 1 << '\n';
-            tasks_middle[i]->display_task();
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks[i].get_task_priority() == "Middle") {
+                std::cout << "#" << i + 1 << '\n';
+                tasks[i].display_task();
+            }
         }
     }
 
-    void display_tasks_low() {
-        if (tasks_low.size() == 0) {
+    void display_tasks_low() const {
+        if (!task_low_exists()) {
             std::cout << "There Are No Low-Priority Tasks\n";
             return;
         }
 
         std::cout << "Low-Priority Tasks: \n";
-        for (int i = 0; i < tasks_low.size(); i++) {
-            std::cout << "#" << i + 1 << '\n';
-            tasks_low[i]->display_task();
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks[i].get_task_priority() == "Low") {
+                std::cout << "#" << i + 1 << '\n';
+                tasks[i].display_task();
+            }
         }
     }
 
-    void unsorted_display() {
+    void unsorted_display() const {
         if (tasks.size() == 0) {
             std::cout << "There Are No Tasks\n";
             return;
@@ -362,11 +175,11 @@ public:
 
         for (int i = 0; i < tasks.size(); i++) {
             std::cout << "#" << i + 1 << '\n';
-            tasks[i]->display_task();
+            tasks[i].display_task();
         }
     }
 
-    void sorted_display() {
+    void sorted_display() const {
         if (tasks.size() == 0) {
             std::cout << "There Are No Tasks\n";
             return;
@@ -384,37 +197,19 @@ private:
         std::cout << "----------------------\n";
         std::cout << "     CREATING MENU    \n";
         std::cout << "----------------------\n";
-        std::cout << "Select: \n";
-        std::cout << "1 - High-Priority Task\n";
-        std::cout << "2 - Middle-Priority Task\n";
-        std::cout << "3 - Low-Priority Task\n\n";
     }
 
-    void complete_info1() const {
+    void complete_info() const {
         std::cout << "----------------------\n";
         std::cout << "    COMPLETING MENU   \n";
         std::cout << "----------------------\n";
-        std::cout << "Select: \n";
-        std::cout << "1 - Complete High-Priority Task\n";
-        std::cout << "2 - Complete Middle-Priority Task\n";
-        std::cout << "3 - Complete Low-Priority Task\n\n";
-    }
-
-    void complete_info2() const {
         std::cout << "Enter Tasks' Title: ";
     }
 
-    void delete_info1() const {
+    void delete_info() const {
         std::cout << "----------------------\n";
         std::cout << "     DELETING MENU    \n";
         std::cout << "----------------------\n";
-        std::cout << "Select: \n";
-        std::cout << "1 - Delete High-Priority Task\n";
-        std::cout << "2 - Delete Middle-Priority Task\n";
-        std::cout << "3 - Delete Low-Priority Task\n\n";
-    }
-
-    void delete_info2() const {
         std::cout << "Enter Tasks' Title: ";
     }
 
@@ -430,9 +225,10 @@ private:
         std::cout << "5 - View Sorted Tasks\n\n";
     }
 
-    void create_task_high() {
+    void create_task() {
         std::string t;
         std::string d;
+        std::string p;
 
         std::cout << "Enter title: ";
         std::cin >> t;
@@ -440,36 +236,11 @@ private:
         std::cout << "Enter description: ";
         std::cin >> d;
 
-        TaskHigh* task_high = new TaskHigh(t, d);
-        add_task_high(task_high);
-    }
+        std::cout << "Enter priority: ";
+        std::cin >> p;
 
-    void create_task_middle() {
-        std::string t;
-        std::string d;
-
-        std::cout << "Enter title: ";
-        std::cin >> t;
-
-        std::cout << "Enter description: ";
-        std::cin >> d;
-
-        TaskMiddle* task_middle = new TaskMiddle(t, d);
-        add_task_middle(task_middle);
-    }
-
-    void create_task_low() {
-        std::string t;
-        std::string d;
-
-        std::cout << "Enter title: ";
-        std::cin >> t;
-
-        std::cout << "Enter description: ";
-        std::cin >> d;
-
-        TaskLow* task_low = new TaskLow(t, d);
-        add_task_low(task_low);
+        Task task(t, d, p);
+        add_task(task);
     }
 public:
     UserInterface() {}
@@ -490,96 +261,32 @@ public:
         std::cout << "5 - Clear Console\n\n";
     }
 
-    void exit_case() {
+    void exit_case() const {
         std::cout << "See you later!";
         exit(0);
     }
 
     void create_case() {
         create_info();
-
-        std::string choice;
-        std::cin >> choice;
-
-        if (choice == "1") {
-            create_task_high();
-        }
-
-        if (choice == "2") {
-            create_task_middle();
-        }
-
-        if (choice == "3") {
-            create_task_low();
-        }
+        create_task();
     }
 
     void complete_case() {
-        complete_info1();
+        complete_info();
 
-        std::string choice;
-        std::cin >> choice;
+        std::string title;
+        std::cin >> title;
 
-        if (choice == "1") {
-            complete_info2();
-
-            std::string title;
-            std::cin >> title;
-
-            complete_task_high(title);
-        }
-
-        if (choice == "2") {
-            complete_info2();
-
-            std::string title;
-            std::cin >> title;
-
-            complete_task_middle(title);
-        }
-
-        if (choice == "3") {
-            complete_info2();
-
-            std::string title;
-            std::cin >> title;
-
-            complete_task_low(title);
-        }
+        complete_task(title);
     }
 
     void delete_case() {
-        delete_info1();
+        delete_info();
+        
+        std::string title;
+        std::cin >> title;
 
-        std::string choice;
-        std::cin >> choice;
-
-        if (choice == "1") {
-            delete_info2();
-
-            std::string title;
-            std::cin >> title;
-
-            delete_task_high(title);
-        }
-
-        if (choice == "2") {
-            delete_info2();
-
-            std::string title;
-            std::cin >> title;
-
-            delete_task_middle(title);
-        }
-
-        if (choice == "3") {
-            delete_info2();
-
-            std::string title;
-            std::cin >> title;
-
-            delete_task_low(title);
-        }
+        delete_task(title);
     }
 
     void view_case() {
@@ -614,34 +321,31 @@ int main() {
     UserInterface UI;
     UI.greeting();
     UI.general_info();
-    
+
     while (true) {
         std::string choice;
         std::cout << "Your Choice: ";
         std::cin >> choice;
 
-        if (choice == "0"){
+        if (choice == "0") {
             UI.exit_case();
         }
-        
+
         if (choice == "1") {
             system("cls");
             UI.create_case();
-            // system("cls");
             UI.general_info();
         }
 
         if (choice == "2") {
             system("cls");
             UI.complete_case();
-            // system("cls");
             UI.general_info();
         }
 
         if (choice == "3") {
             system("cls");
             UI.delete_case();
-            // system("cls");
             UI.general_info();
         }
 
